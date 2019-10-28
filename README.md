@@ -1,7 +1,4 @@
 ### Project Instructions
-<!-- There should be clear step by step instruction that include specs for students to work at their own pace. Remember, class at ACA is intended to be used a study hall. Students should be able to work at each project with the help of a professional developer floating around the classroom. This will significantly help our students learn to program, problem-solve, and code.  -->
-
-Continued from yesterday's homework:
 
 1. Back on your local machine, use the Angular CLI to:
 2. Create a new application called `PlaceHolder`
