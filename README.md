@@ -1,27 +1,104 @@
-# PlaceHolder
+### Project Instructions
+<!-- There should be clear step by step instruction that include specs for students to work at their own pace. Remember, class at ACA is intended to be used a study hall. Students should be able to work at each project with the help of a professional developer floating around the classroom. This will significantly help our students learn to program, problem-solve, and code.  -->
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.3.
+Continued from yesterday's homework:
 
-## Development server
+1. Back on your local machine, use the Angular CLI to:
+2. Create a new application called `PlaceHolder`
+```
+ng new Placeholder
+```
+3. Create a service file called `placeholder` service.
+```
+ng generate service /services/Placeholder
+```
+4. Import the necessary modules to make REST calls.
+    > *In your app.module.ts, import the 'HttpClientModule' from '@angular/common/http'*
+5. Create a todo model usning: `ng generate interface /interfaces/ITodo` and add these properties:
+```typescript
+export interface ITodo {
+    userId: number;
+    id: number;
+    title: string;
+    completed:boolean;
+}
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```
+6. Create a GET service method
+7. Inside that GET service method, call `https://jsonplaceholder.typicode.com/todos`.  It should all look like this:
+```typescript
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { ITodo } from "../interfaces/itodo";
 
-## Code scaffolding
+@Injectable({
+  providedIn: "root"
+})
+export class PlaceholderService {
+  constructor(private http: HttpClient) {}
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+  get(): Observable<ITodo> {
+    return this.http.get<ITodo>("https://jsonplaceholder.typicode.com/todos");
+  }
+}
+```
+8. In the `app.component.ts` inject the placeholder service
+```typescript
+import { Component } from '@angular/core';
+import { PlaceholderService } from './services/placeholder.service';
 
-## Build
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  constructor(placeholderService: PlaceholderService){}
+}
+```
+9. In the `app.component.html` file Create a  table with the following headers:
+```html
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Completed</th>
+  </tr>
+</table>
+```
+10. Populate the table rows with data return to the REST method using `*ngFor'.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### app.component.ts
 
-## Running unit tests
+```typescript
+import { Component } from '@angular/core';
+import { PlaceholderService } from './services/placeholder.service';
+import { ITodo } from './interfaces/itodo';
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  todos: ITodo[];
+  constructor(placeholderService: PlaceholderService){
+    placeholderService.get()
+    .subscribe(data=> this.todos = data);
+  }
+}
+```
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### app.component.html
+```html
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Completed</th>
+  </tr>
+  <tr *ngFor='let todo of todos'>
+    <td>{{todo.title}}</td>
+    <td>{{todo.completed}}</td>
+  </tr>
+</table>
+```
