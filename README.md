@@ -99,3 +99,4 @@ export class AppComponent {
   </tr>
 </table>
 ```
+11. Use any free time to style the table in any way you'd like.
