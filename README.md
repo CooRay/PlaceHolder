@@ -35,8 +35,8 @@ import { ITodo } from "../interfaces/itodo";
 export class PlaceholderService {
   constructor(private http: HttpClient) {}
 
-  get(): Observable<ITodo> {
-    return this.http.get<ITodo>("https://jsonplaceholder.typicode.com/todos");
+  get(): Observable<ITodo[]> {
+    return this.http.get<ITodo[]>("https://jsonplaceholder.typicode.com/todos");
   }
 }
 ```
